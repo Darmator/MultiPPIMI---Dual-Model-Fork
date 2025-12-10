@@ -18,16 +18,24 @@ This repository extends the original MultiPPIMI framework to predict both binary
 ### Code reproducibility
 - **`main_dual.py`**: Training script for dual-task bioactivity prediction models
 - **`FDA_repurposing.ipynb`**: Jupyter notebook demonstrating batch predictions on FDA molecules with full reproducibility
+- **`bioactivity_score.py`**: Simplified API for model loading and inference
 
 ## Repository Structure
 ```
 ├── data/
 │   ├── FDA_structures/          # FDA-approved drugs for repurposing
 │   ├── features/                # Extended protein feature set
+│   │   ├── protein_esm2.csv           # ESM2 embeddings (692 proteins)
+│   │   ├── protein_phy.csv            # Physicochemical properties (692 proteins)
+│   │   ├── protein_binding_esm2.csv   # Additional ESM2 embeddings (6140 proteins)
+│   │   └── protein_binding_phy.csv    # Additional properties (6140 proteins)
+│   ├── protein_seqs.csv         # Primary protein set (692 proteins)
+│   ├── protein_binding_seqs.csv # Extended protein set (6140 proteins)
 │   └── reg_data/                # PPI regression affinity datasets (ChEMBL)
 ├── final_models/                # Pre-trained ensemble (10 NN weights)
 ├── src/
 │   ├── MultiPPIMI.py           # Dual classification/regression model
+│   ├── bioactivity_score.py    # Easy-to-use inference API
 │   ├── datasets/
 │   │   ├── PPIMI_datasets.py   # Enhanced dataset class with fast inference
 │   └── ...
@@ -38,7 +46,6 @@ This repository extends the original MultiPPIMI framework to predict both binary
 ```
 
 ## Installation
-
 ### Option 1: Automatic Installation
 Create the conda environment automatically from the provided environment file:
 ```bash
@@ -75,12 +82,40 @@ Train your own dual-task model using the modified training script:
 python main_dual.py --fold 1
 ```
 
-### Drug Repurposing Workflow
-The `FDA_repurposing.ipynb` notebook provides a complete pipeline for:
-- Loading FDA-approved drug structures
-- Running ensemble predictions
-- Ensuring full reproducibility of predictions
+### Bioactivity Score Prediction
 
+The `FDA_repurposing.ipynb` notebook serves as both a comprehensive tutorial for applying the model to obtain predictions and a reproducibility script for our results.
+
+For programmatic access, use the simplified `PPIScore` class defined in `src/bioactivity_score.py`:
+```python
+from src.bioactivity_score import PPIScore
+
+# Initialize model for a specific protein-protein interaction
+# Example: NCS-1 (P62166) and Ric8 (Q9NPQ8)
+ric8_model = PPIScore(prot1="P62166", prot2="Q9NPQ8")  # NCS1/Ric8
+
+# Predict bioactivity score for a small molecule (SMILES string)
+score = ric8_model("OCCN(CCO)C1=NC2=C(N=C(N=C2N2CCCCC2)N(CCO)CCO)C(=N1)N1CCCCC1")
+print(f"Predicted bioactivity score: {score}")
+
+# Batch predictions on multiple molecules
+smiles_list = ["CCO", "CC(=O)O", "c1ccccc1"]
+scores = ric8_model(smiles_list)
+```
+
+#### Available Proteins
+
+The model currently supports predictions for **692 proteins** listed in `data/protein_seqs.csv`. An additional **6,140 proteins** are available in `data/protein_binding_seqs.csv`.
+
+**To use proteins from the extended set** (`protein_binding_seqs.csv`):
+1. Extract the protein's ESM2 embedding from `data/features/protein_binding_esm2.csv`
+2. Extract the protein's physicochemical properties from `data/features/protein_binding_phy.csv`
+3. Append these features to `data/features/protein_esm2.csv` and `data/features/protein_phy.csv` respectively
+
+**For proteins not in either dataset**:
+1. Generate ESM2 embeddings using the [ESM2 protein language model](https://huggingface.co/facebook/esm2_t33_650M_UR50D)
+2. Calculate the physicochemical properties described in the [Supporting Information Table S2 of the original MultiPPIMI paper](https://pubs.acs.org/doi/suppl/10.1021/acs.jcim.3c01527/suppl_file/ci3c01527_si_001.pdf)
+3. Add the features to the appropriate CSV files following the existing format
 <!--
 <> ## Citation
 
