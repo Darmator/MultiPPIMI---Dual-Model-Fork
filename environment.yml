@@ -1,0 +1,19 @@
+name: dual_multippimi
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+    - --extra-index-url https://download.pytorch.org/whl/cu124
+    - torch==2.6.0
+    - torchvision==0.21.0
+    - torchaudio==2.6.0
+    - torch_geometric
+    - --find-links https://data.pyg.org/whl/torch-2.6.0+cu124.html
+    - torch-scatter
+    - torch-sparse
+    - torch-cluster
+    - ogb==1.3.5
+    - rdkit
