@@ -19,14 +19,17 @@ from MultiPPIMI import DualMultiPPIMI
 class PPIScore():
     def __init__(self,
                  prot1 = "P62166", #NCS-1
-                 prot2 = "Q9NPQ8"): #Ric8
+                 prot2 = "Q9NPQ8", #Ric8
+                 model_folder_location = "./final_models/", #Folder where the ensemble of models is located
+                 n_models = 10
+                 ): 
         """Initialize scorer with target protein pair and load ensemble of 10 models."""
         self.prot1 = prot1
         self.prot2 = prot2
         self.model_list = []
         
         # Load ensemble of 10 pre-trained dual-task models
-        for i in range(10):
+        for i in range(n_models):
             # Initialize compound GNN encoder
             modulator_model = GNNComplete(5, 300, JK='last', drop_ratio=0, gnn_type="gin")
             modulator_model.load_state_dict(torch.load('./src/GraphMVP_C.model'))
@@ -39,7 +42,7 @@ class PPIScore():
                 device="cuda:0",
                 h_dim=512, n_heads=2
                 ).to("cuda:0")
-            PPIMI_model.load_state_dict(torch.load("./final_models/final_filter_"+str(i)+".model"))
+            PPIMI_model.load_state_dict(torch.load(model_folder_location+"final_filter_"+str(i)+".model"))
             self.model_list.append(PPIMI_model)
             
     def multippimi_predicting(self, PPIMI_model, device, dataloader, regression=True):
