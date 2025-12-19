@@ -4,6 +4,8 @@ A fork of [MultiPPIMI](https://github.com/sun-heqi/MultiPPIMI/tree/main) extende
 ## Overview
 This repository extends the original MultiPPIMI framework to predict both binary activity labels (classification) and continuous binding affinity values (regression) for potential PPIMIs. The dual-task approach enables more nuanced bioactivity predictions and has been applied to FDA-approved drug repurposing.
 
+<img width="1942" height="763" alt="multi_task_multippi" src="https://github.com/user-attachments/assets/3b96a871-50d9-4eb0-8f7a-78680d7ba9da" />
+
 ## Key Modifications from Original Repository
 ### Enhanced Dual-Task Architecture
 - **Dual Model Implementation**: Modified `MultiPPIMI.py` to support simultaneous classification and regression predictions
