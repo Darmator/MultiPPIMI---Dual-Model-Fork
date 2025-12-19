@@ -120,20 +120,6 @@ To select a protein-protein interaction (PPI) for prediction, you need to know t
 1. Generate ESM2 embeddings using the [ESM2 protein language model](https://huggingface.co/facebook/esm2_t33_650M_UR50D)
 2. Calculate physicochemical properties as described in the [original MultiPPIMI paper](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01527)
 3. Add the features to the appropriate CSV files following the existing format
-
-#### Available Proteins
-
-The model currently supports predictions for **692 proteins** listed in `data/protein_seqs.csv`. An additional **6,140 proteins** are available in `data/protein_binding_seqs.csv`.
-
-**To use proteins from the extended set** (`protein_binding_seqs.csv`):
-1. Extract the protein's ESM2 embedding from `data/features/protein_binding_esm2.csv`
-2. Extract the protein's physicochemical properties from `data/features/protein_binding_phy.csv`
-3. Append these features to `data/features/protein_esm2.csv` and `data/features/protein_phy.csv` respectively
-
-**For proteins not in either dataset**:
-1. Generate ESM2 embeddings using the [ESM2 protein language model](https://huggingface.co/facebook/esm2_t33_650M_UR50D)
-2. Calculate the physicochemical properties described in the [Supporting Information Table S2 of the original MultiPPIMI paper](https://pubs.acs.org/doi/suppl/10.1021/acs.jcim.3c01527/suppl_file/ci3c01527_si_001.pdf)
-3. Add the features to the appropriate CSV files following the existing format
 <!--
 <> ## Citation
 
