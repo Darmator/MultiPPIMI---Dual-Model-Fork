@@ -118,7 +118,7 @@ To select a protein-protein interaction (PPI) for prediction, you need to know t
 
 **For proteins not in either dataset**:
 1. Generate ESM2 embeddings using the [ESM2 protein language model](https://huggingface.co/facebook/esm2_t33_650M_UR50D)
-2. Calculate physicochemical properties as described in the [original MultiPPIMI paper](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01527)
+2. Calculate physicochemical properties as described in the [original MultiPPIMI paper Table S2](https://pubs.acs.org/doi/suppl/10.1021/acs.jcim.3c01527/suppl_file/ci3c01527_si_001.pdf)
 3. Add the features to the appropriate CSV files following the existing format
 <!--
 <> ## Citation
